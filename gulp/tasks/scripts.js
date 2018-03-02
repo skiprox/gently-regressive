@@ -8,12 +8,14 @@ const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const uglify = require('gulp-uglify');
 const gulpif = require('gulp-if');
+const gutil = require('gulp-util')
 const sourcemaps = require('gulp-sourcemaps');
 
+// TODO: figure out a way to do this with paths.json
 const SRC = ['**/*.js'];
 
 module.exports = function init(name, gulp, config) {
-    const cwd = path.join(config.dir.source, 'js');
+    const cwd = config.folder.js;
 
     if (!config.production) {
         gulp.watch(SRC, {cwd: cwd}, [name])
@@ -31,10 +33,12 @@ module.exports = function init(name, gulp, config) {
                             entries: [entry],
                             basedir: cwd,
                             debug: true
-                        }).bundle(),
+                        }).transform("babelify", {"presets": ["env"]}).bundle().on('error', (error) => {
+                            gutil.log(error.stack);
+                        }),
                         source(entry),
                         buffer(),
-                        gulpif(config.production, uglify()),
+                        // gulpif(config.production, uglify()),
                         gulpif(!config.production, sourcemaps.init({loadMaps: true})),
                         gulpif(!config.production, sourcemaps.write('.')),
                         gulp.dest(config.dir.output)

@@ -1,5 +1,9 @@
 'use strict';
 
+// PULL ALL PATHS FROM JSON FILE
+const config = require('./paths.json');
+
+// All other requires
 const path = require('path');
 const immu = require('immu');
 
@@ -11,24 +15,15 @@ const argv = require('yargs')
     .describe('p', 'Sets production flag.')
     .argv;
 
-const source = './src';
-const output = './dist';
-const temp = './.tmp';
-const dump = './.dmp';
+// Change the output directory if we're in production
+config.dir.output = argv.production ? config.dir.output : config.dir.temp;
 
-const config = {
-    dir: {
-        source: source,
-        output: argv.production ? output : temp,
-        dump: dump
-    }
-};
-
+// Setup the server configuration
 config.server = {
     name: 'https://browsersync.io/docs/api#api-get',
     options: {
-        server: temp,
-        files: [path.join(temp, '**/*')],
+        server: config.dir.temp,
+        files: [path.join(config.dir.temp, '**/*')],
         port: 3000,
         watchOptions: {
             ignoreInitial: true
@@ -36,6 +31,7 @@ config.server = {
     }
 };
 
+// Set up options for the rev task
 config.tasks = {
     /**
      * NOTE: Rev options https://github.com/smysnk/gulp-rev-all#options
@@ -55,4 +51,5 @@ config.tasks = {
     }
 };
 
+// Export the entire config
 module.exports = immu(Object.assign({}, config, argv));

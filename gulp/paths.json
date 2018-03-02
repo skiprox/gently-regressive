@@ -1,0 +1,20 @@
+{
+    "dir": {
+        "source": "./src",
+        "output": "./dist",
+        "temp": "./.tmp",
+        "dump": "./.dmp"
+    },
+    "folder": {
+        "assets": "./src/assets",
+        "templates": "./src/templates",
+        "pages": "./src/templates/pages",
+        "js": "./src/js",
+        "icons": "./src/icons",
+        "images": "./src/images",
+        "scss": "./src/scss"
+    },
+    "file": {
+        "default_html": "index"
+    }
+}
