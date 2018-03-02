@@ -2,7 +2,7 @@
 
 class TestModule {
 	constructor() {
-		console.log('hello world!');
+		console.log('suck it, nerds');
 	}
 }
 

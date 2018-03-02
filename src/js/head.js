@@ -2,7 +2,7 @@
 
 class Head {
 	constructor() {
-		console.log('this is blocking');
+		// Put blocking code here
 	}
 }
 
